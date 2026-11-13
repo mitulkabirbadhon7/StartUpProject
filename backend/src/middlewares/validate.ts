@@ -6,16 +6,16 @@ export const validate = (schema: AnyZodObject) => {
     try {
       req.body = await schema.parseAsync(req.body);
       next();
-    } catch (error) {
-      if (error instanceof ZodError) {
+    } catch (error: any) {
+      if (error instanceof ZodError || error?.name === 'ZodError') {
         res.status(400).json({
           status: 'error',
           code: 'VALIDATION_FAILED',
           message: 'Invalid input payload',
-          errors: error.errors.map((e) => ({
-            field: e.path.join('.'),
+          errors: error.errors?.map((e: any) => ({
+            field: e.path?.join('.'),
             message: e.message,
-          })),
+          })) || [],
         });
         return;
       }
@@ -29,16 +29,16 @@ export const validateQuery = (schema: AnyZodObject) => {
     try {
       req.query = (await schema.parseAsync(req.query)) as any;
       next();
-    } catch (error) {
-      if (error instanceof ZodError) {
+    } catch (error: any) {
+      if (error instanceof ZodError || error?.name === 'ZodError') {
         res.status(400).json({
           status: 'error',
           code: 'INVALID_QUERY_PARAMETERS',
           message: 'Invalid query parameters provided',
-          errors: error.errors.map((e) => ({
-            field: e.path.join('.'),
+          errors: error.errors?.map((e: any) => ({
+            field: e.path?.join('.'),
             message: e.message,
-          })),
+          })) || [],
         });
         return;
       }

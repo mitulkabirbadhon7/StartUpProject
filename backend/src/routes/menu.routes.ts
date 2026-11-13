@@ -4,6 +4,7 @@ import { getMenuItems, getWinePairingForDish } from '../controllers/menu.control
 const router = Router();
 
 router.get('/', getMenuItems);
+router.get('/items', getMenuItems);
 router.get('/:dishId/wine-pairing', getWinePairingForDish);
 
 export default router;
