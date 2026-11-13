@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, Calendar, Clock, Users, Check, AlertCircle, ShieldCheck } from 'lucide-react';
+import { X, Calendar, Clock, Users, Check, AlertCircle, ShieldCheck, Download } from 'lucide-react';
+import Link from 'next/link';
 import { TableItem } from '../floorplan/FloorplanViewer';
 
 interface ReservationDrawerProps {
@@ -56,6 +57,43 @@ export default function ReservationDrawer({
       setConfirmationCode(code);
       setStep(4);
     }
+  };
+
+  const downloadCalendarIcs = () => {
+    if (!confirmationCode) return;
+    const isPizzeria = restaurantSlug === 'lievito-madre';
+    const restName = isPizzeria ? 'Lievito Madre' : "L'Étoile & Terroir";
+    const restLocation = isPizzeria ? 'Via dei Tribunali 32, 80138 Napoli, Italy' : '14 Rue Saint-Honoré, 75001 Paris, France';
+    const formattedDate = date.replace(/-/g, '');
+    const formattedTime = time.replace(':', '');
+
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//European Dining Demos//Reservation Service//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      `UID:${confirmationCode}@${isPizzeria ? 'lievitomadre-artisan.it' : 'letoile-terroir.fr'}`,
+      `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
+      `DTSTART:${formattedDate}T${formattedTime}00Z`,
+      `SUMMARY:Dinner Reservation: ${restName} (${confirmationCode})`,
+      `DESCRIPTION:Table reserved for ${partySize} guests in ${zone.replace('_', ' ').toUpperCase()}. Guest: ${guestName || 'Valued Guest'}.`,
+      `LOCATION:${restLocation}`,
+      'STATUS:CONFIRMED',
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\r\n');
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${restaurantSlug}-reservation-${confirmationCode}.ics`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const handleReset = () => {
@@ -268,7 +306,10 @@ export default function ReservationDrawer({
                   className="mt-1 rounded bg-espresso-900 border-stone-200/20 text-bordeaux-800 focus:ring-0"
                 />
                 <label htmlFor="gdpr" className="text-[11px] text-stone-400 leading-snug">
-                  I consent to the processing of my contact information solely for this dining reservation pursuant to the European General Data Protection Regulation (GDPR).
+                  I consent to the processing of my contact information solely for this dining reservation pursuant to the{' '}
+                  <Link href="/privacy" target="_blank" className="text-butter-300 underline underline-offset-2">
+                    European General Data Protection Regulation (GDPR)
+                  </Link>.
                 </label>
               </div>
             </div>
@@ -304,7 +345,16 @@ export default function ReservationDrawer({
                 </div>
               </div>
 
-              <div className="pt-4">
+              <div className="pt-4 space-y-2.5">
+                <button
+                  type="button"
+                  onClick={downloadCalendarIcs}
+                  className="w-full py-3 rounded-xl bg-espresso-900 border border-stone-200/20 text-butter-300 font-medium text-xs hover:bg-espresso-850 hover:border-butter-300/40 transition-all shadow-md flex items-center justify-center gap-2"
+                >
+                  <Download className="w-4 h-4 text-butter-300" />
+                  <span>Add to Apple / Google Calendar (.ics)</span>
+                </button>
+
                 <button
                   onClick={handleReset}
                   className="w-full py-3 rounded-xl bg-bordeaux-800 text-stone-100 font-medium text-xs hover:bg-bordeaux-700 transition-colors shadow-lg"

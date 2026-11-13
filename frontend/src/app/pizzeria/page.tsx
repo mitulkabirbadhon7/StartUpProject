@@ -222,11 +222,22 @@ export default function PizzeriaPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-terracotta-600/20 bg-hearth-950/95 py-8 px-6 text-xs text-stone-400 text-center">
-        <p className="font-serif text-stone-200">Lievito Madre • Via dei Tribunali 32, Napoli</p>
-        <p className="text-[11px] text-stone-500 mt-1">
-          Designed by Mitul Kabir Badhon • GDPR Compliant
-        </p>
+      <footer className="border-t border-terracotta-600/20 bg-hearth-950/95 py-10 px-6 text-xs text-stone-400">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-center md:text-left">
+            <p className="font-serif text-stone-200 text-sm">Lievito Madre • Via dei Tribunali 32, Napoli Centro</p>
+            <p className="text-[11px] text-stone-500 mt-0.5">
+              Pizzeria Artigianale Napoletana • Designed by Mitul Kabir Badhon
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-6 text-xs">
+            <Link href="/" className="hover:text-stone-200 transition-colors">Master Portal</Link>
+            <Link href="/bistro" className="hover:text-stone-200 transition-colors">Bistro Demo</Link>
+            <Link href="/impressum" className="hover:text-stone-200 transition-colors">Impressum (Legal)</Link>
+            <Link href="/privacy" className="hover:text-stone-200 transition-colors">GDPR Privacy Policy</Link>
+          </div>
+        </div>
       </footer>
 
       {/* Reservation Drawer */}

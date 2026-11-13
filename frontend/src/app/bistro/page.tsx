@@ -272,11 +272,22 @@ export default function BistroPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-stone-200/10 bg-espresso-950/95 py-8 px-6 text-xs text-stone-400 text-center">
-        <p className="font-serif text-stone-200">L&apos;Étoile & Terroir • 14 Rue Saint-Honoré, Paris</p>
-        <p className="text-[11px] text-stone-500 mt-1">
-          Designed by Mitul Kabir Badhon • Compliant with EU GDPR Directives
-        </p>
+      <footer className="border-t border-stone-200/10 bg-espresso-950/95 py-10 px-6 text-xs text-stone-400">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-center md:text-left">
+            <p className="font-serif text-stone-200 text-sm">L&apos;Étoile & Terroir • 14 Rue Saint-Honoré, Paris 1er</p>
+            <p className="text-[11px] text-stone-500 mt-0.5">
+              Haute Gastronomie Française • Designed by Mitul Kabir Badhon
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-6 text-xs">
+            <Link href="/" className="hover:text-stone-200 transition-colors">Master Portal</Link>
+            <Link href="/pizzeria" className="hover:text-stone-200 transition-colors">Pizzeria Demo</Link>
+            <Link href="/impressum" className="hover:text-stone-200 transition-colors">Impressum (Legal)</Link>
+            <Link href="/privacy" className="hover:text-stone-200 transition-colors">GDPR Privacy Policy</Link>
+          </div>
+        </div>
       </footer>
 
       {/* Modals & Drawers */}
