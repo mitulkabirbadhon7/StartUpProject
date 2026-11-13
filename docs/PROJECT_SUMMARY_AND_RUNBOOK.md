@@ -209,10 +209,10 @@ The project includes unit and integration test suites executed with Vitest:
 
 | Test File | Category | Focus Areas | Status |
 |---|---|---|---|
-| `backend/tests/unit/validation.test.ts` | Unit | Zod schema validation for European reservation formats, GDPR consent enforcement, 24h time formatting, query parameter sanitization, timing-safe cryptographic password verification | **PASSED** (5 tests) |
-| `backend/tests/integration/api.test.ts` | Integration | Express server health check, restaurant details retrieval, 404 error handling, floorplan data retrieval, menu dietary filters, valid reservation with `.ics` export, rejection of invalid GDPR consent | **PASSED** (9 tests) |
+| `backend/tests/unit/validation.test.ts` | Unit | Zod schema validation for European reservation formats, UUID verification, party size boundaries (1-20), seating zone constraints, GDPR consent enforcement, 24h time formatting, query parameter validation, GDPR cookie consent schemas, and timing-safe cryptographic password verification | **PASSED** (10 tests) |
+| `backend/tests/integration/api.test.ts` | Integration | Express server health check, restaurant details with valid UUIDs, 404 error handling, floorplan data retrieval for both bistro & pizzeria, 404 for unknown floorplans, menu dietary filters, EU allergen exclusion, seasonality filters, query parameter validation (rejecting unsupported currencies), 5-axis sommelier wine pairing lookup, pairing 404 handling, valid reservations with localized `.ics` payloads (Paris/Naples), rejection of invalid GDPR consent, party size limits, and structured JSON 404 fallback | **PASSED** (20 tests) |
 
-**Total Test Result:** 14 tests passing across 2 test suites.  
+**Total Test Result:** 30 tests passing across 2 test suites.  
 **Build Result:** Next.js 15, Backend, and Shared packages compile with zero errors (8 static routes generated).
 
 ---
