@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>European Gastronomy Web Demos — Project Summary & Operational Runbook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --espresso-950: #1a130e;
+      --espresso-900: #2a1e17;
+      --espresso-800: #3d2d23;
+      --bordeaux-800: #5e1924;
+      --bordeaux-700: #7b2432;
+      --butter-300: #f3e5ab;
+      --butter-400: #ecd382;
+      --stone-50: #faf8f5;
+      --stone-100: #f7f4ee;
+      --stone-200: #efe9de;
+      --stone-400: #b8aa94;
+      --terracotta-600: #c86d51;
+      --amber-500: #d9822b;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--espresso-950);
+      color: var(--stone-100);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      font-size: 14.5px;
+      -webkit-font-smoothing: antialiased;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      background: var(--espresso-900);
+      border: 1px solid rgba(247, 244, 238, 0.12);
+      border-radius: 16px;
+      padding: 48px 56px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Print action bar */
+    .action-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bordeaux-800);
+      color: var(--stone-100);
+      border: 1px solid rgba(243, 229, 171, 0.3);
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-print:hover {
+      background: var(--bordeaux-700);
+    }
+
+    header.doc-header {
+      border-bottom: 1px solid rgba(247, 244, 238, 0.15);
+      padding-bottom: 32px;
+      margin-bottom: 36px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--bordeaux-800);
+      color: var(--butter-300);
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border: 1px solid rgba(243, 229, 171, 0.3);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--stone-50);
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: var(--stone-400);
+      margin-bottom: 20px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      background: rgba(26, 19, 14, 0.6);
+      padding: 18px 24px;
+      border-radius: 10px;
+      border: 1px solid rgba(247, 244, 238, 0.08);
+      font-size: 13px;
+    }
+
+    .meta-item strong {
+      display: block;
+      color: var(--butter-300);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 3px;
+    }
+
+    .meta-item a {
+      color: var(--stone-200);
+      text-decoration: underline;
+    }
+
+    h2 {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--butter-300);
+      margin-top: 40px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid rgba(247, 244, 238, 0.1);
+      padding-bottom: 8px;
+    }
+
+    h3 {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--stone-100);
+      margin-top: 24px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 14px;
+      color: #dfd8cb;
+    }
+
+    ul, ol {
+      margin-left: 24px;
+      margin-bottom: 16px;
+      color: #dfd8cb;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13px;
+      background: rgba(26, 19, 14, 0.5);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(247, 244, 238, 0.1);
+    }
+
+    th, td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid rgba(247, 244, 238, 0.08);
+    }
+
+    th {
+      background: rgba(94, 25, 36, 0.4);
+      color: var(--butter-300);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    pre, code {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+    }
+
+    pre {
+      background: #120d09;
+      padding: 16px 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(247, 244, 238, 0.1);
+      overflow-x: auto;
+      margin: 16px 0;
+      color: var(--stone-200);
+      line-height: 1.5;
+    }
+
+    code {
+      background: rgba(247, 244, 238, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--butter-300);
+    }
+
+    .callout {
+      background: rgba(94, 25, 36, 0.25);
+      border-left: 4px solid var(--bordeaux-800);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+      font-size: 13.5px;
+    }
+
+    .callout-success {
+      background: rgba(34, 197, 94, 0.12);
+      border-left: 4px solid #22c55e;
+    }
+
+    footer.doc-footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(247, 244, 238, 0.12);
+      text-align: center;
+      font-size: 12px;
+      color: var(--stone-400);
+    }
+
+    /* Print-to-PDF Media Rules */
+    @media print {
+      body {
+        background-color: #ffffff !important;
+        color: #1a1a1a !important;
+        padding: 0;
+        font-size: 11pt;
+      }
+
+      .container {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+        background: transparent !important;
+      }
+
+      .action-bar {
+        display: none !important;
+      }
+
+      .badge {
+        background: #f4f4f4 !important;
+        color: #333 !important;
+        border: 1px solid #ccc !important;
+      }
+
+      h1, h2, h3 {
+        color: #111 !important;
+      }
+
+      h2 {
+        border-bottom: 1.5pt solid #ddd !important;
+        page-break-after: avoid;
+      }
+
+      p, li, td {
+        color: #333 !important;
+      }
+
+      .meta-grid {
+        background: #f9f9f9 !important;
+        border: 1px solid #ddd !important;
+      }
+
+      .meta-item strong {
+        color: #777 !important;
+      }
+
+      pre {
+        background: #f4f4f4 !important;
+        color: #222 !important;
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid;
+      }
+
+      code {
+        background: #eaeaea !important;
+        color: #111 !important;
+      }
+
+      table {
+        background: transparent !important;
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid;
+      }
+
+      th {
+        background: #eaeaea !important;
+        color: #111 !important;
+      }
+
+      td {
+        border-bottom: 1px solid #ddd !important;
+      }
+
+      .callout {
+        background: #f9f9f9 !important;
+        border-left: 4pt solid #5e1924 !important;
+        color: #222 !important;
+      }
+
+      .callout-success {
+        border-left-color: #16a34a !important;
+      }
+
+      footer.doc-footer {
+        border-top: 1pt solid #ccc !important;
+        color: #666 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="action-bar">
+      <button class="btn-print" onclick="window.print()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 6 2 18 2 18 9"></polyline>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+          <rect x="6" y="14" width="12" height="8"></rect>
+        </svg>
+        Print / Save to PDF
+      </button>
+    </div>
+
+    <header class="doc-header">
+      <span class="badge">Production Runbook & Technical Architecture</span>
+      <h1>European Gastronomy Web Demos</h1>
+      <p class="subtitle">Bespoke Client Acquisition Web Applications for High-End European Gastronomy & Hospitality</p>
+      
+      <div class="meta-grid">
+        <div class="meta-item">
+          <strong>Lead Developer</strong>
+          Mitul Kabir Badhon
+        </div>
+        <div class="meta-item">
+          <strong>GitHub Profile</strong>
+          <a href="https://github.com/mitulkabirbadhon7" target="_blank">github.com/mitulkabirbadhon7</a>
+        </div>
+        <div class="meta-item">
+          <strong>Target Repository</strong>
+          <a href="https://github.com/mitulkabirbadhon7/StartUpProject.git" target="_blank">StartUpProject.git</a>
+        </div>
+        <div class="meta-item">
+          <strong>Tech Stack</strong>
+          Next.js 15, Express, Neon Postgres, Drizzle
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <h2>1. Executive Summary & Design Directives</h2>
+      <p>
+        The European Gastronomy Web Demos platform delivers two bespoke, Michelin-caliber digital showcases designed to demonstrate how independent European restaurateurs can eliminate third-party aggregator commissions (15-30% on platforms like OpenTable or TheFork), enforce full European regulatory compliance (GDPR and EU-14 allergen tracking), and substantially elevate beverage and tasting menu ticket averages through interactive sommelier pairings.
+      </p>
+      <div class="callout">
+        <strong>Strict Anti-AI Slop Mandate:</strong> In full compliance with project quality directives, this repository contains zero AI/Gemini logos, zero robotic glyphs, and zero generic purple-to-cyan SaaS gradients. Every interface embodies European tactile luxury: Warm Espresso (<code>#2A1E17</code>), Stone Ivory (<code>#F7F4EE</code>), Deep Bordeaux (<code>#5E1924</code>), and Butter Yellow (<code>#F3E5AB</code>).
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Monorepo Architecture</h2>
+      <p>The solution is organized as an npm workspaces monorepo with clean separation of concerns:</p>
+      <ul>
+        <li><strong><code>/frontend</code>:</strong> Next.js 15 App Router, React 19, Tailwind CSS, Framer Motion, and Lucide React. Pre-renders static high-performance landing pages for both dining venues.</li>
+        <li><strong><code>/backend</code>:</strong> Node.js & Express.js REST API with Drizzle ORM connecting to Neon Serverless PostgreSQL. Hardened with Helmet, CORS, and rate limiting.</li>
+        <li><strong><code>/shared</code>:</strong> Universal single source of truth exporting Zod validation schemas and TypeScript DTOs shared synchronously across client and server.</li>
+        <li><strong><code>/docs</code>:</strong> Engineering specifications, database schemas, phased implementation blueprints, and this operational runbook.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Flagship Interactive Features</h2>
+      
+      <h3>3.1 Interactive SVG Floorplan & Seat Selector</h3>
+      <p>
+        Guests can visually explore distinct dining zones (Heated Garden Terrace, Grand Dining Hall, Sommelier Wine Vault, Chef's Counter) and reserve specific tables with real-time capacity and acoustic ambient notes. Table selections seamlessly pre-populate the reservation drawer.
+      </p>
+
+      <h3>3.2 EU-14 Allergen & Dietary Matrix Filter</h3>
+      <p>
+        Full compliance with EU Directive 1169/2011. Allows immediate filtering by dietary preferences (Vegan, Vegetarian, Gluten-Free, Dairy-Free, Halal) and individual exclusion of European mandatory allergens (fish, nuts, eggs, gluten, milk).
+      </p>
+
+      <h3>3.3 Sommelier Pairing Engine with 5-Axis Flavor Radar</h3>
+      <p>
+        Every dish is dynamically paired with certified European wines or aperitifs. An interactive SVG radar chart plots Acidity, Tannins, Body, Oak, and Intensity on a 5-point scale, offering sommelier tasting notes, vintage, and regional terroir context.
+      </p>
+
+      <h3>3.4 European Reservation Drawer with iCalendar (.ics) Sync</h3>
+      <p>
+        A 3-step tactile reservation workflow requiring explicit GDPR consent. Upon confirmation, generates a unique European booking reference code and an RFC 5545 <code>.ics</code> calendar file for one-click Apple Calendar / Google Calendar integration.
+      </p>
+    </section>
+
+    <section>
+      <h2>4. Verification & Quality Record</h2>
+      <div class="callout callout-success">
+        <strong>Test Suite Status: All 14 Automated Tests Passing</strong><br>
+        Unit tests verify Zod schemas, GDPR enforcement, and cryptographic security.<br>
+        Integration tests verify all Express v1 routes, 404 handling, dietary filtering, and reservation confirmation workflows.
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Test File</th>
+            <th>Type</th>
+            <th>Tests</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>backend/tests/unit/validation.test.ts</code></td>
+            <td>Unit</td>
+            <td>5 tests</td>
+            <td>Passed</td>
+          </tr>
+          <tr>
+            <td><code>backend/tests/integration/api.test.ts</code></td>
+            <td>Integration</td>
+            <td>9 tests</td>
+            <td>Passed</td>
+          </tr>
+          <tr>
+            <td><code>Next.js Production Build</code></td>
+            <td>Build & Lint</td>
+            <td>8 Static Routes</td>
+            <td>Zero Errors</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>5. Quickstart & Deployment Runbook</h2>
+
+      <h3>5.1 Local Development</h3>
+      <pre><code># 1. Clone repository
+git clone https://github.com/mitulkabirbadhon7/StartUpProject.git
+cd StartUpProject
+
+# 2. Install dependencies
+npm install
+
+# 3. Build shared packages
+npm run build --workspace=shared
+
+# 4. Run automated test suite
+npm test
+
+# 5. Start development servers
+npm run dev:backend   # Express REST API (port 5000)
+npm run dev:frontend  # Next.js 15 Web Application (port 3000)</code></pre>
+
+      <h3>5.2 Production Deployment</h3>
+      <p>
+        The monorepo can be deployed with the frontend on Vercel and the backend on Railway, Render, or Fly.io with a managed Neon Serverless PostgreSQL instance.
+      </p>
+      <ul>
+        <li><strong>Frontend Root:</strong> <code>frontend</code> | Build Command: <code>npm run build</code> | Output: <code>.next</code></li>
+        <li><strong>Backend Root:</strong> <code>backend</code> | Build Command: <code>npm run build</code> | Start: <code>npm start</code></li>
+        <li><strong>Database:</strong> Neon Serverless PostgreSQL with SSL (<code>DATABASE_URL=...?sslmode=require</code>)</li>
+      </ul>
+    </section>
+
+    <footer class="doc-footer">
+      <p>European Gastronomy Web Demos &copy; 2026 Mitul Kabir Badhon. All rights reserved.</p>
+      <p>Architected for elite European hospitality & fine dining client acquisition.</p>
+    </footer>
+  </div>
+</body>
+</html>
