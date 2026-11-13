@@ -11,7 +11,7 @@ export const getRestaurantDetails = async (req: Request, res: Response, next: Ne
       res.json({
         status: 'success',
         data: {
-          id: 'bistro-001',
+          id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
           slug: 'letoile-terroir',
           name: "L'Étoile & Terroir",
           type: 'fine_dining_bistro',
@@ -45,7 +45,7 @@ export const getRestaurantDetails = async (req: Request, res: Response, next: Ne
       res.json({
         status: 'success',
         data: {
-          id: 'pizzeria-001',
+          id: 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a22',
           slug: 'lievito-madre',
           name: 'Lievito Madre',
           type: 'artisan_pizzeria',

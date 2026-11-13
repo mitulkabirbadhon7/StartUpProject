@@ -42,6 +42,15 @@ app.get('/health', (req, res) => {
 // Mount API v1 Routes
 app.use('/api/v1', apiRoutes);
 
+// 404 Handler for undefined API routes
+app.use((req, res) => {
+  res.status(404).json({
+    status: 'error',
+    code: 'ROUTE_NOT_FOUND',
+    message: `Cannot ${req.method} ${req.originalUrl} - Endpoint not found on European Dining Demos API`,
+  });
+});
+
 // Global Centralized Error Handling
 app.use(errorHandler);
 

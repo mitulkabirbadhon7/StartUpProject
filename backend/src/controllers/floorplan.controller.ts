@@ -4,7 +4,44 @@ export const getFloorplan = async (req: Request, res: Response, next: NextFuncti
   try {
     const { slug } = req.params;
 
+    if (slug !== 'letoile-terroir' && slug !== 'lievito-madre') {
+      res.status(404).json({
+        status: 'error',
+        code: 'RESTAURANT_NOT_FOUND',
+        message: `No European restaurant floorplan found for slug: ${slug}`,
+      });
+      return;
+    }
+
     res.setHeader('Cache-Control', 'public, s-maxage=30, stale-while-revalidate=60');
+
+    if (slug === 'lievito-madre') {
+      const pizzeriaZones = [
+        { id: 'zone-p1', slug: 'hearth_counter', name: '450°C Wood-Fired Hearth Bar', ambientNotes: 'Front-row view of Stefano Ferrara oven and pizza masters' },
+        { id: 'zone-p2', slug: 'main_hall', name: 'Sala Principale', ambientNotes: 'Rustic brick arches, terracotta floor, lively Neapolitan buzz' },
+        { id: 'zone-p3', slug: 'terrace', name: 'Pergola Garden Terrace', ambientNotes: 'Lemon trees, evening warm festoon lights, street acoustics' },
+      ];
+
+      const pizzeriaTables = [
+        { id: 'tbl-p-h1', zoneId: 'zone-p1', tableNumber: 'H1', minCapacity: 1, maxCapacity: 2, shape: 'counter', svgX: 180, svgY: 100, isAvailable: true },
+        { id: 'tbl-p-h2', zoneId: 'zone-p1', tableNumber: 'H2', minCapacity: 1, maxCapacity: 2, shape: 'counter', svgX: 280, svgY: 100, isAvailable: true },
+        { id: 'tbl-p-s1', zoneId: 'zone-p2', tableNumber: 'S1', minCapacity: 2, maxCapacity: 4, shape: 'rectangular', svgX: 450, svgY: 180, isAvailable: true },
+        { id: 'tbl-p-s2', zoneId: 'zone-p2', tableNumber: 'S2', minCapacity: 4, maxCapacity: 6, shape: 'rectangular', svgX: 450, svgY: 300, isAvailable: false },
+        { id: 'tbl-p-t1', zoneId: 'zone-p3', tableNumber: 'P1', minCapacity: 2, maxCapacity: 4, shape: 'circular', svgX: 720, svgY: 180, isAvailable: true },
+        { id: 'tbl-p-t2', zoneId: 'zone-p3', tableNumber: 'P2', minCapacity: 4, maxCapacity: 8, shape: 'booth', svgX: 720, svgY: 300, isAvailable: true },
+      ];
+
+      res.json({
+        status: 'success',
+        data: {
+          restaurantSlug: slug,
+          viewBox: '0 0 900 550',
+          zones: pizzeriaZones,
+          tables: pizzeriaTables,
+        },
+      });
+      return;
+    }
 
     const zones = [
       { id: 'zone-1', slug: 'terrace', name: 'Heated Garden Terrace', ambientNotes: 'Lanterns, fragrant jasmine, gentle breeze' },

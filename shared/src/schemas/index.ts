@@ -26,6 +26,7 @@ export const ReservationCreateSchema = z.object({
 export type ReservationCreateInput = z.infer<typeof ReservationCreateSchema>;
 
 export const MenuFilterSchema = z.object({
+  restaurantSlug: z.string().optional(),
   dietary: z.string().optional(), // comma-separated: 'vegan,gluten_free'
   allergensExclude: z.string().optional(), // comma-separated: 'nuts,milk'
   isSeasonalOnly: z.enum(['true', 'false']).optional(),

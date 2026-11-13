@@ -29,17 +29,24 @@ export const createReservation = async (req: Request, res: Response, next: NextF
       createdAt: new Date().toISOString(),
     };
 
+    const isPizzeria = payload.restaurantId === 'b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a22';
+    const restaurantName = isPizzeria ? 'Lievito Madre' : "L'Étoile & Terroir";
+    const restaurantDomain = isPizzeria ? 'lievitomadre-artisan.it' : 'letoile-terroir.fr';
+    const restaurantLocation = isPizzeria
+      ? 'Via dei Tribunali 32, 80138 Naples, Italy'
+      : '14 Rue Saint-Honoré, 75001 Paris, France';
+
     // Calendar payload (.ics format string for direct client sync)
     const icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
       'PRODID:-//European Dining Demos//Reservation Service//EN',
       'BEGIN:VEVENT',
-      `UID:${newReservation.id}@letoile-terroir.fr`,
+      `UID:${newReservation.id}@${restaurantDomain}`,
       `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
-      `SUMMARY:Dinner Reservation: L'Étoile & Terroir (${confirmationCode})`,
+      `SUMMARY:Dinner Reservation: ${restaurantName} (${confirmationCode})`,
       `DESCRIPTION:Table reserved for ${payload.partySize} guests in ${payload.seatingZone.replace('_', ' ').toUpperCase()}`,
-      `LOCATION:14 Rue Saint-Honoré, 75001 Paris, France`,
+      `LOCATION:${restaurantLocation}`,
       'STATUS:CONFIRMED',
       'END:VEVENT',
       'END:VCALENDAR',
