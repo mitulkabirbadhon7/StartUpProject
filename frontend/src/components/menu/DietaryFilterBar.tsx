@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Filter, Check, ShieldCheck, Sparkles } from 'lucide-react';
+import { Filter, Check, ShieldCheck } from 'lucide-react';
 
 export interface DietaryOption {
   id: string;
@@ -53,7 +53,7 @@ export default function DietaryFilterBar({
 
         {matchingCount !== undefined && (
           <div className="flex items-center gap-2 self-start md:self-auto px-3 py-1.5 rounded-full bg-espresso-950/80 border border-stone-200/10 text-xs text-butter-300">
-            <Sparkles className="w-3.5 h-3.5" />
+            <Check className="w-3.5 h-3.5" />
             <span>{matchingCount} Courses Match Selection</span>
           </div>
         )}

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Wine, X, Thermometer, Globe, Award, Sparkles } from 'lucide-react';
+import { Wine, X, Thermometer, Globe, Award } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 
 export interface WinePairingData {

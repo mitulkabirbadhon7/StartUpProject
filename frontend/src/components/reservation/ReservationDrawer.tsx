@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, Calendar, Clock, Users, Check, Sparkles, AlertCircle, ShieldCheck } from 'lucide-react';
+import { X, Calendar, Clock, Users, Check, AlertCircle, ShieldCheck } from 'lucide-react';
 import { TableItem } from '../floorplan/FloorplanViewer';
 
 interface ReservationDrawerProps {
@@ -203,7 +203,7 @@ export default function ReservationDrawer({
 
               {selectedTable && (
                 <div className="p-3 rounded-xl bg-espresso-900 border border-stone-200/10 text-xs text-butter-300 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 shrink-0" />
+                  <Check className="w-4 h-4 shrink-0" />
                   <span>Floorplan table <strong>{selectedTable.tableNumber}</strong> pre-selected.</span>
                 </div>
               )}

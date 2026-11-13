@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Wine, Clock, Sparkles, MapPin, Phone, Check, Award } from 'lucide-react';
+import { ArrowLeft, Wine, Clock, MapPin, Phone, Check, Award } from 'lucide-react';
 import FloorplanViewer, { TableItem } from '@/components/floorplan/FloorplanViewer';
 import DietaryFilterBar from '@/components/menu/DietaryFilterBar';
 import WinePairingDrawer, { WinePairingData } from '@/components/sommelier/WinePairingDrawer';

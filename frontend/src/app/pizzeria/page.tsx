@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Flame, Clock, Sparkles, MapPin, Wine, Check, Wheat } from 'lucide-react';
+import { ArrowLeft, Flame, Clock, Award, MapPin, Wine, Check, Wheat } from 'lucide-react';
 import ReservationDrawer from '@/components/reservation/ReservationDrawer';
 import { formatCurrency } from '@/lib/utils';
 
@@ -139,7 +139,7 @@ export default function PizzeriaPage() {
               <p className="text-[10px] text-stone-400 mt-0.5">90-Second Blister</p>
             </div>
             <div className="p-3 rounded-xl bg-hearth-900/80 border border-terracotta-600/10">
-              <Sparkles className="w-4 h-4 text-amber-500 mx-auto mb-1.5" />
+              <Award className="w-4 h-4 text-amber-500 mx-auto mb-1.5" />
               <p className="font-serif font-semibold text-stone-200">D.O.P. Ingredients</p>
               <p className="text-[10px] text-stone-400 mt-0.5">Certified Provenance</p>
             </div>
