@@ -3,6 +3,7 @@ import { Playfair_Display, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import GdprBanner from '@/components/compliance/GdprBanner';
 import FloatingTriggers from '@/components/actions/FloatingTriggers';
+import { CurrencyProvider } from '@/context/CurrencyContext';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -32,9 +33,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${plusJakarta.variable}`}>
       <body className="bg-espresso-950 text-stone-100 min-h-screen selection:bg-bordeaux-800 selection:text-white">
-        {children}
-        <GdprBanner />
-        <FloatingTriggers />
+        <CurrencyProvider>
+          {children}
+          <GdprBanner />
+          <FloatingTriggers />
+        </CurrencyProvider>
       </body>
     </html>
   );

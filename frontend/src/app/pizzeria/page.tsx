@@ -7,6 +7,7 @@ import { ArrowLeft, Flame, Clock, Sparkles, MapPin, Wine, Check, Wheat, Star, Ch
 import ReservationDrawer from '@/components/reservation/ReservationDrawer';
 import FermentationVisualizer from '@/components/pizzeria/FermentationVisualizer';
 import TiltCard from '@/components/ui/TiltCard';
+import { useCurrency } from '@/context/CurrencyContext';
 import { formatCurrency } from '@/lib/utils';
 
 const PIZZAS = [
@@ -54,7 +55,7 @@ const PIZZAS = [
 
 export default function PizzeriaPage() {
   const [isReservationOpen, setIsReservationOpen] = useState<boolean>(false);
-  const [currency, setCurrency] = useState<'EUR' | 'GBP' | 'CHF'>('EUR');
+  const { currency, setCurrency, formatPrice } = useCurrency();
   const [filter, setFilter] = useState<string>('all');
 
   // Interactive Pizza Feast & Group Estimator
@@ -91,14 +92,23 @@ export default function PizzeriaPage() {
             <span className="hidden sm:inline">Master Demos Portal</span>
           </Link>
 
-          <div className="text-center">
-            <h1 className="font-serif font-bold text-xl text-stone-100 tracking-tight">
-              Lievito Madre
-            </h1>
+          <Link
+            href="/pizzeria"
+            aria-label="Lievito Madre - Return to Pizzeria Home"
+            className="group flex flex-col items-center text-center transition-transform active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded-xl px-2 py-1"
+          >
+            <div className="flex items-center justify-center gap-2">
+              <div className="w-5 h-5 rounded-full bg-terracotta-700/80 border border-amber-500/40 text-amber-400 flex items-center justify-center group-hover:scale-110 group-hover:bg-terracotta-600 transition-all shadow-sm">
+                <Flame className="w-2.5 h-2.5" />
+              </div>
+              <h1 className="font-serif font-bold text-lg sm:text-xl text-stone-100 tracking-tight group-hover:text-amber-400 transition-colors">
+                Lievito Madre
+              </h1>
+            </div>
             <p className="text-[10px] text-amber-500 tracking-widest uppercase font-semibold">
               Pizzeria Artigianale Napoletana • Napoli Centro
             </p>
-          </div>
+          </Link>
 
           <div className="flex items-center gap-3">
             <div className="flex items-center bg-hearth-900 rounded-xl p-0.5 border border-terracotta-600/20 text-xs font-mono">
@@ -201,62 +211,79 @@ export default function PizzeriaPage() {
 
         {/* Pizza Catalog with High-Res Photography & 3D Tilt Cards */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {filteredPizzas.map((pizza) => (
-            <TiltCard key={pizza.id} glowColor="rgba(217, 130, 43, 0.2)">
-              <div className="pizzeria-glass rounded-3xl overflow-hidden border border-terracotta-600/20 shadow-2xl flex flex-col justify-between h-full group">
-                {/* Visual Image Header */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={pizza.image}
-                    alt={pizza.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-hearth-950 via-hearth-950/20 to-transparent" />
-                  <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-hearth-950/90 backdrop-blur-md border border-amber-500/40 text-amber-400 font-serif font-bold text-sm shadow">
-                    {formatCurrency(pizza.priceCents, currency)}
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-6 md:p-8 space-y-3 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 className="font-serif text-xl md:text-2xl font-medium text-stone-100 group-hover:text-amber-400 transition-colors">
-                      {pizza.title}
-                    </h3>
-                    <p className="text-xs text-stone-400 italic font-serif mt-0.5">{pizza.titleIt}</p>
-                    <p className="text-xs text-stone-300 leading-relaxed pt-2 font-sans">{pizza.desc}</p>
-
-                    <div className="flex flex-wrap gap-1.5 pt-3">
-                      {pizza.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2.5 py-0.5 rounded-lg bg-hearth-950/80 border border-terracotta-600/20 text-[10px] text-stone-300 font-medium"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+          {filteredPizzas.length === 0 ? (
+            <div className="col-span-full py-16 px-6 text-center pizzeria-glass rounded-3xl border border-terracotta-600/20 space-y-4">
+              <Wheat className="w-8 h-8 text-amber-500/60 mx-auto" />
+              <h4 className="font-serif text-xl text-stone-100">No Artisanal Pizzas Match This Category</h4>
+              <p className="text-xs text-stone-400 max-w-md mx-auto">
+                Our pizzaiolo can tailor our sourdough crust with plant-based fior di latte and seasonal Vesuvio vegetables upon request.
+              </p>
+              <button
+                onClick={() => setFilter('all')}
+                className="px-4 py-2 rounded-xl bg-terracotta-600 text-stone-100 text-xs font-semibold hover:bg-terracotta-700 transition-colors"
+              >
+                Show All Pizzas
+              </button>
+            </div>
+          ) : (
+            filteredPizzas.map((pizza) => (
+              <TiltCard key={pizza.id} glowColor="rgba(217, 130, 43, 0.2)">
+                <div className="pizzeria-glass rounded-3xl overflow-hidden border border-terracotta-600/20 shadow-2xl flex flex-col justify-between h-full group">
+                  {/* Visual Image Header */}
+                  <div className="relative aspect-[16/10] w-full overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={pizza.image}
+                      alt={pizza.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-hearth-950 via-hearth-950/20 to-transparent" />
+                    <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-hearth-950/90 backdrop-blur-md border border-amber-500/40 text-amber-400 font-serif font-bold text-sm shadow">
+                      {formatPrice(pizza.priceCents)}
                     </div>
                   </div>
 
-                  <div className="pt-6 mt-4 border-t border-terracotta-600/15 flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-1.5 text-stone-400">
-                      <Wine className="w-3.5 h-3.5 text-terracotta-500" />
-                      <span className="text-[11px]">Pair: <em>{pizza.pairAperitivo}</em></span>
+                  {/* Content */}
+                  <div className="p-6 md:p-8 space-y-3 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-serif text-xl md:text-2xl font-medium text-stone-100 group-hover:text-amber-400 transition-colors">
+                        {pizza.title}
+                      </h3>
+                      <p className="text-xs text-stone-400 italic font-serif mt-0.5">{pizza.titleIt}</p>
+                      <p className="text-xs text-stone-300 leading-relaxed pt-2 font-sans">{pizza.desc}</p>
+
+                      <div className="flex flex-wrap gap-1.5 pt-3">
+                        {pizza.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-2.5 py-0.5 rounded-lg bg-hearth-950/80 border border-terracotta-600/20 text-[10px] text-stone-300 font-medium"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
                     </div>
 
-                    <button
-                      onClick={() => setIsReservationOpen(true)}
-                      className="px-4 py-2 rounded-xl bg-terracotta-600 text-stone-100 font-semibold hover:bg-terracotta-700 transition-colors shadow-md active:scale-95"
-                    >
-                      Book Table
-                    </button>
+                    <div className="pt-6 mt-4 border-t border-terracotta-600/15 flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-1.5 text-stone-400">
+                        <Wine className="w-3.5 h-3.5 text-terracotta-500" />
+                        <span className="text-[11px]">Pair: <em>{pizza.pairAperitivo}</em></span>
+                      </div>
+
+                      <button
+                        onClick={() => setIsReservationOpen(true)}
+                        aria-label={`Book Table for ${pizza.title}`}
+                        className="px-4 py-2 rounded-xl bg-terracotta-600 text-stone-100 font-semibold hover:bg-terracotta-700 transition-colors shadow-md active:scale-95"
+                      >
+                        Book Table
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </TiltCard>
-          ))}
+              </TiltCard>
+            ))
+          )}
         </section>
 
         {/* Group Neapolitan Feast Calculator (Interactive Calculation Tool) */}
@@ -278,7 +305,7 @@ export default function PizzeriaPage() {
             <div className="p-3 rounded-2xl bg-hearth-900 border border-terracotta-600/20 text-xs self-start md:self-auto">
               <span className="text-stone-400">Estimated Total:</span>{' '}
               <strong className="text-amber-400 font-serif text-base font-bold ml-1">
-                {formatCurrency(totalFeastCents, currency)}
+                {formatPrice(totalFeastCents)}
               </strong>
             </div>
           </div>
@@ -327,7 +354,7 @@ export default function PizzeriaPage() {
                       : 'bg-hearth-900 text-stone-400 border-terracotta-600/10'
                   }`}
                 >
-                  Gluten-Free (+€3)
+                  Gluten-Free (+{formatPrice(300)})
                 </button>
               </div>
             </div>
@@ -341,7 +368,7 @@ export default function PizzeriaPage() {
                   onChange={(e) => setIncludeAntipasti(e.target.checked)}
                   className="rounded bg-hearth-900 border-terracotta-600/20 text-terracotta-600 focus:ring-0"
                 />
-                <span className="text-stone-300">Campania Burrata & Prosciutto (+€9.50/p)</span>
+                <span className="text-stone-300">Campania Burrata & Prosciutto (+{formatPrice(950)}/p)</span>
               </label>
               <label className="flex items-center gap-2 p-2 rounded-xl bg-hearth-900/60 border border-terracotta-600/10 text-xs cursor-pointer">
                 <input
@@ -350,17 +377,18 @@ export default function PizzeriaPage() {
                   onChange={(e) => setIncludeSpritzPitcher(e.target.checked)}
                   className="rounded bg-hearth-900 border-terracotta-600/20 text-terracotta-600 focus:ring-0"
                 />
-                <span className="text-stone-300">Aperol Spritz Pitcher (+€8.50/p)</span>
+                <span className="text-stone-300">Aperol Spritz Pitcher (+{formatPrice(850)}/p)</span>
               </label>
             </div>
           </div>
 
           <div className="pt-6 mt-6 border-t border-terracotta-600/20 flex items-center justify-between">
             <span className="text-xs text-stone-400">
-              Estimated per guest: <strong className="text-amber-400 font-mono">{formatCurrency(totalFeastCents / partySize, currency)}</strong>
+              Estimated per guest: <strong className="text-amber-400 font-mono">{formatPrice(Math.round(totalFeastCents / partySize))}</strong>
             </span>
             <button
               onClick={() => setIsReservationOpen(true)}
+              aria-label={`Reserve Feast for ${partySize} Guests`}
               className="px-6 py-3 rounded-xl bg-terracotta-600 text-stone-100 text-xs font-semibold hover:bg-terracotta-700 transition-colors shadow-lg"
             >
               Reserve Feast for {partySize} Guests
@@ -372,12 +400,14 @@ export default function PizzeriaPage() {
       {/* Footer */}
       <footer className="border-t border-terracotta-600/20 bg-hearth-950/95 py-10 px-6 text-xs text-stone-400">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <p className="font-serif text-stone-200 text-sm font-medium">Lievito Madre • Via dei Tribunali 32, Napoli</p>
+          <Link href="/pizzeria" aria-label="Lievito Madre Napoli" className="group block">
+            <p className="font-serif text-stone-200 text-sm font-medium group-hover:text-amber-400 transition-colors">
+              Lievito Madre • Via dei Tribunali 32, Napoli
+            </p>
             <p className="text-[11px] text-stone-500 mt-0.5">
               Designed by Mitul Kabir Badhon • Stefano Ferrara 450°C Wood-Fired Hearth
             </p>
-          </div>
+          </Link>
 
           <div className="flex flex-wrap items-center gap-6 text-xs">
             <Link href="/" className="hover:text-stone-200 transition-colors">Master Demos</Link>

@@ -121,6 +121,7 @@ export const reservations = pgTable('reservations', {
   confirmationCode: varchar('confirmation_code', { length: 16 }).unique().notNull(),
   restaurantId: uuid('restaurant_id').notNull().references(() => restaurants.id, { onDelete: 'cascade' }),
   tableId: uuid('table_id').references(() => tables.id, { onDelete: 'set null' }),
+  seatingZone: varchar('seating_zone', { length: 32 }).default('terrace').notNull(),
   guestName: varchar('guest_name', { length: 128 }).notNull(),
   guestEmail: varchar('guest_email', { length: 128 }).notNull(),
   guestPhone: varchar('guest_phone', { length: 32 }).notNull(),

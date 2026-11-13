@@ -15,19 +15,19 @@ export default function PrivacyPage() {
         </Link>
 
         <div className="bistro-glass rounded-3xl p-8 md:p-12 border border-stone-200/10 space-y-8">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-bordeaux-800 text-butter-300">
+          <Link href="/" aria-label="Return to European Gastronomy Portal" className="inline-flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-butter-300 rounded-2xl p-1">
+            <div className="p-2.5 rounded-xl bg-bordeaux-800 text-butter-300 group-hover:bg-bordeaux-700 group-hover:scale-105 transition-all shadow-md">
               <Lock className="w-6 h-6" />
             </div>
             <div>
               <span className="text-[11px] font-bold uppercase tracking-widest text-butter-300">
                 Data Protection Directive
               </span>
-              <h1 className="font-serif text-3xl font-medium text-stone-100">
+              <h1 className="font-serif text-3xl font-medium text-stone-100 group-hover:text-butter-300 transition-colors">
                 GDPR Privacy Policy (EU 2016/679)
               </h1>
             </div>
-          </div>
+          </Link>
 
           <div className="space-y-6 text-xs text-stone-300 leading-relaxed font-sans">
             <div>

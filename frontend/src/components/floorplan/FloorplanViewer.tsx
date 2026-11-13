@@ -289,6 +289,16 @@ export default function FloorplanViewer({ onSelectTable, selectedTableId }: Floo
                   onMouseEnter={() => setHoveredTable(table)}
                   onMouseLeave={() => setHoveredTable(null)}
                   style={{ cursor: table.isAvailable ? 'pointer' : 'not-allowed' }}
+                  tabIndex={table.isAvailable ? 0 : -1}
+                  role="button"
+                  aria-label={`Table ${table.tableNumber}, ${table.capacity} guests in ${table.zoneName}. ${table.isAvailable ? 'Available for booking' : 'Currently occupied'}`}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleTableClick(table);
+                    }
+                  }}
+                  className="focus:outline-none"
                 >
                   {/* Outer Pulsing Glow Ring for Selected Table (No CSS Transform Clashing) */}
                   {isSelected && (
@@ -402,10 +412,10 @@ export default function FloorplanViewer({ onSelectTable, selectedTableId }: Floo
               </div>
 
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-stone-400">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-stone-300 font-semibold">
                   Atmospheric Vantage Note
                 </span>
-                <p className="text-xs text-stone-200 mt-1 leading-relaxed font-sans">
+                <p className="text-xs text-stone-100 mt-1 leading-relaxed font-sans">
                   {activePreviewTable.vantageNote}
                 </p>
               </div>

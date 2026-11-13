@@ -40,12 +40,10 @@ export const requireAdminAuth = (req: AuthenticatedRequest, res: Response, next:
 
   const token = authHeader.split(' ')[1];
 
-  // Timing safe token comparison against system secret
-  const expectedToken = env.JWT_SECRET;
-  const isMatch = crypto.timingSafeEqual(
-    Buffer.from(token.padEnd(64, '0')),
-    Buffer.from(expectedToken.padEnd(64, '0'))
-  );
+  // Timing safe token comparison against system secret using cryptographic hashes
+  const tokenHash = crypto.createHash('sha256').update(token).digest();
+  const expectedHash = crypto.createHash('sha256').update(env.JWT_SECRET).digest();
+  const isMatch = crypto.timingSafeEqual(tokenHash, expectedHash);
 
   if (!isMatch) {
     res.status(403).json({

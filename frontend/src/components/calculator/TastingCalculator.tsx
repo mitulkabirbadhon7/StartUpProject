@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calculator, Wine, Users, Sparkles, Clock, Check, ChevronRight } from 'lucide-react';
+import { useCurrency } from '@/context/CurrencyContext';
 import { formatCurrency } from '@/lib/utils';
 
 interface TastingCalculatorProps {
@@ -30,8 +31,9 @@ const PAIRINGS = [
 
 export default function TastingCalculator({
   onReserveWithEstimate,
-  currency = 'EUR',
+  currency,
 }: TastingCalculatorProps) {
+  const { currency: globalCurrency, formatPrice } = useCurrency();
   const [selectedExp, setSelectedExp] = useState<string>('5-course');
   const [selectedPairing, setSelectedPairing] = useState<string>('classic');
   const [guests, setGuests] = useState<number>(2);
@@ -48,9 +50,9 @@ export default function TastingCalculator({
   const grandTotalCents = perGuestTotalCents * guests;
 
   return (
-    <div className="w-full bistro-glass rounded-3xl p-6 md:p-10 border border-stone-200/15 shadow-2xl relative overflow-hidden">
+    <div className="w-full max-w-full overflow-hidden bistro-glass rounded-3xl p-6 md:p-10 border border-stone-200/15 shadow-2xl relative">
       {/* Ambient background glow */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-bordeaux-800/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-80 md:w-96 h-80 md:h-96 bg-bordeaux-800/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-stone-200/10">
@@ -130,7 +132,7 @@ export default function TastingCalculator({
                   <div className="pt-3 mt-3 border-t border-stone-200/10 flex items-baseline justify-between">
                     <span className="text-[10px] text-stone-400 font-mono">{exp.duration}</span>
                     <span className="font-serif font-semibold text-sm text-bordeaux-400">
-                      {formatCurrency(exp.priceCents, currency)}
+                      {formatPrice(exp.priceCents)}
                     </span>
                   </div>
                 </div>
@@ -158,7 +160,7 @@ export default function TastingCalculator({
                   <div className="flex items-center justify-between">
                     <span className="font-serif text-xs font-medium text-stone-100">{pair.name}</span>
                     <span className="text-xs font-mono font-semibold text-butter-300">
-                      {pair.priceCents === 0 ? 'Table Choice' : `+${formatCurrency(pair.priceCents, currency)}`}
+                      {pair.priceCents === 0 ? 'Table Choice' : `+${formatPrice(pair.priceCents)}`}
                     </span>
                   </div>
                   <p className="text-[10px] text-stone-400 mt-1 leading-snug">{pair.desc}</p>
@@ -178,7 +180,7 @@ export default function TastingCalculator({
               />
               <div>
                 <span className="font-medium text-stone-200">Champagne Grand Cru Arrival</span>
-                <p className="text-[10px] text-stone-400">+€28.00 per guest (Egly-Ouriet Brut Tradition)</p>
+                <p className="text-[10px] text-stone-400">+{formatPrice(2800)} per guest (Egly-Ouriet Brut Tradition)</p>
               </div>
             </label>
 
@@ -191,7 +193,7 @@ export default function TastingCalculator({
               />
               <div>
                 <span className="font-medium text-stone-200">Affiné French Cheese Trolley</span>
-                <p className="text-[10px] text-stone-400">+€22.00 per guest (5 raw-milk selections)</p>
+                <p className="text-[10px] text-stone-400">+{formatPrice(2200)} per guest (5 raw-milk selections)</p>
               </div>
             </label>
           </div>
@@ -213,7 +215,7 @@ export default function TastingCalculator({
               <div className="flex justify-between text-stone-300">
                 <span>{expObj.name} (x{guests})</span>
                 <span className="font-mono text-stone-100">
-                  {formatCurrency(expObj.priceCents * guests, currency)}
+                  {formatPrice(expObj.priceCents * guests)}
                 </span>
               </div>
 
@@ -221,7 +223,7 @@ export default function TastingCalculator({
                 <div className="flex justify-between text-stone-300">
                   <span>{pairObj.name} (x{guests})</span>
                   <span className="font-mono text-stone-100">
-                    {formatCurrency(pairObj.priceCents * guests, currency)}
+                    {formatPrice(pairObj.priceCents * guests)}
                   </span>
                 </div>
               )}
@@ -230,7 +232,7 @@ export default function TastingCalculator({
                 <div className="flex justify-between text-stone-300">
                   <span>Champagne Arrival (x{guests})</span>
                   <span className="font-mono text-stone-100">
-                    {formatCurrency(champagneCentsPerGuest * guests, currency)}
+                    {formatPrice(champagneCentsPerGuest * guests)}
                   </span>
                 </div>
               )}
@@ -239,7 +241,7 @@ export default function TastingCalculator({
                 <div className="flex justify-between text-stone-300">
                   <span>Affiné Cheese Trolley (x{guests})</span>
                   <span className="font-mono text-stone-100">
-                    {formatCurrency(cheeseCentsPerGuest * guests, currency)}
+                    {formatPrice(cheeseCentsPerGuest * guests)}
                   </span>
                 </div>
               )}
@@ -249,13 +251,13 @@ export default function TastingCalculator({
               <div className="flex justify-between items-baseline">
                 <span className="text-xs text-stone-400">Per Guest Average:</span>
                 <span className="font-serif font-semibold text-base text-butter-300">
-                  {formatCurrency(perGuestTotalCents, currency)}
+                  {formatPrice(perGuestTotalCents)}
                 </span>
               </div>
               <div className="flex justify-between items-baseline pt-1">
                 <span className="text-sm font-serif font-medium text-stone-100">Grand Total:</span>
                 <span className="font-serif font-bold text-2xl text-bordeaux-400">
-                  {formatCurrency(grandTotalCents, currency)}
+                  {formatPrice(grandTotalCents)}
                 </span>
               </div>
               <p className="text-[10px] text-stone-500 text-right">
@@ -276,6 +278,7 @@ export default function TastingCalculator({
                   });
                 }
               }}
+              aria-label="Book This Curated Experience"
               className="w-full py-3.5 rounded-2xl bg-bordeaux-800 text-stone-100 text-xs font-semibold hover:bg-bordeaux-700 transition-all shadow-xl flex items-center justify-center gap-2 group"
             >
               <span>Book This Curated Experience</span>
@@ -283,6 +286,32 @@ export default function TastingCalculator({
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Mobile Sticky Quick-Reserve Bar */}
+      <div className="lg:hidden sticky bottom-4 z-20 mt-6 p-4 rounded-2xl bg-espresso-950/95 backdrop-blur-md border border-butter-300/30 shadow-2xl flex items-center justify-between gap-3">
+        <div>
+          <span className="text-[10px] uppercase tracking-wider text-butter-300 font-semibold block">Total ({guests} Guests)</span>
+          <span className="font-serif font-bold text-lg text-bordeaux-400">{formatPrice(grandTotalCents)}</span>
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            if (onReserveWithEstimate) {
+              onReserveWithEstimate({
+                experience: expObj.name,
+                pairing: pairObj.name,
+                guests,
+                totalCents: grandTotalCents,
+              });
+            }
+          }}
+          aria-label="Book this curated experience"
+          className="px-4 py-2.5 rounded-xl bg-bordeaux-800 text-stone-100 text-xs font-semibold hover:bg-bordeaux-700 transition-all shadow-lg flex items-center gap-1.5"
+        >
+          <span>Book Experience</span>
+          <ChevronRight className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );

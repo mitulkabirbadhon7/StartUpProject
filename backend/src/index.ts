@@ -5,6 +5,7 @@ import { env } from './config/env';
 import { apiLimiter } from './middlewares/rateLimiter';
 import { errorHandler } from './middlewares/errorHandler';
 import apiRoutes from './routes';
+import { migrateAndSeedDatabase } from './db/migrateAndSeed';
 
 const app = express();
 
@@ -55,6 +56,10 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 if (process.env.NODE_ENV !== 'test') {
+  migrateAndSeedDatabase().catch((err) => {
+    console.warn('[European Dining Backend] DB migration notice:', err);
+  });
+
   app.listen(env.PORT, () => {
     console.log(`[European Dining Backend] Server listening on http://localhost:${env.PORT}`);
     console.log(`[European Dining Backend] Environment: ${env.NODE_ENV}`);

@@ -9,6 +9,18 @@ import DietaryFilterBar from '@/components/menu/DietaryFilterBar';
 import WinePairingDrawer, { WinePairingData } from '@/components/sommelier/WinePairingDrawer';
 import ReservationDrawer from '@/components/reservation/ReservationDrawer';
 import TiltCard from '@/components/ui/TiltCard';
+import { useCurrency, Currency } from '@/context/CurrencyContext';
+
+const TOTAL_CATALOG_DISHES = [
+  { id: 'b-1', tags: ['Gluten-Free', 'Dairy-Free', 'Halal'] },
+  { id: 'b-2', tags: ['Vegetarian', 'Signature', 'Halal'] },
+  { id: 'b-3', tags: ['Gluten-Free Option', 'Signature'] },
+  { id: 'b-4', tags: ['Vegetarian', 'Signature'] },
+  { id: 'p-1', tags: ['Vegetarian', 'Classic Heritage', 'D.O.P. Certified'] },
+  { id: 'p-2', tags: ['Vegetarian', 'Signature White'] },
+  { id: 'p-3', tags: ['Spicy', 'Signature'] },
+  { id: 'p-4', tags: ['100% Vegan', 'Dairy-Free', 'Heritage'] },
+];
 
 export default function HomePage() {
   const [selectedTable, setSelectedTable] = useState<TableItem | null>(null);
@@ -16,7 +28,8 @@ export default function HomePage() {
   const [activeDietaryFilters, setActiveDietaryFilters] = useState<string[]>([]);
   const [activeWinePairing, setActiveWinePairing] = useState<WinePairingData | null>(null);
   const [activeDishTitle, setActiveDishTitle] = useState<string>('');
-  const [currency, setCurrency] = useState<'EUR' | 'GBP' | 'CHF'>('EUR');
+  
+  const { currency, setCurrency, formatPrice } = useCurrency();
 
   const handleSelectTable = (table: TableItem) => {
     setSelectedTable(table);
@@ -34,33 +47,48 @@ export default function HomePage() {
     setActiveWinePairing(pairing);
   };
 
+  const dynamicMatchCount = activeDietaryFilters.length === 0
+    ? TOTAL_CATALOG_DISHES.length
+    : TOTAL_CATALOG_DISHES.filter((dish) => {
+        if (activeDietaryFilters.includes('vegan') && !dish.tags.includes('100% Vegan')) return false;
+        if (activeDietaryFilters.includes('vegetarian') && !dish.tags.some(t => t.includes('Vegetarian') || t.includes('Vegan'))) return false;
+        if (activeDietaryFilters.includes('gluten_free') && !dish.tags.some(t => t.includes('Gluten-Free'))) return false;
+        if (activeDietaryFilters.includes('dairy_free') && !dish.tags.includes('Dairy-Free')) return false;
+        if (activeDietaryFilters.includes('halal') && !dish.tags.includes('Halal')) return false;
+        return true;
+      }).length;
+
   return (
-    <div className="relative min-h-screen bg-espresso-950 text-stone-100 flex flex-col justify-between selection:bg-bordeaux-800 selection:text-white">
+    <div className="relative min-h-screen bg-espresso-950 text-stone-100 flex flex-col justify-between selection:bg-bordeaux-800 selection:text-white max-w-[100vw] overflow-x-hidden">
       {/* Editorial Luxury Top Bar */}
-      <header className="sticky top-0 z-30 bistro-glass border-b border-stone-200/10 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-bordeaux-800 flex items-center justify-center border border-butter-300/40 text-butter-300 shadow-lg">
-              <UtensilsCrossed className="w-4 h-4" />
+      <header className="sticky top-0 z-30 bistro-glass border-b border-stone-200/10 px-4 sm:px-6 py-3 sm:py-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
+          <Link
+            href="/"
+            aria-label="European Gastronomy Portal Home"
+            className="group flex items-center gap-2 sm:gap-3 shrink-0 rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-butter-300 transition-transform active:scale-95"
+          >
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-bordeaux-800 flex items-center justify-center border border-butter-300/40 text-butter-300 shadow-lg shrink-0 group-hover:scale-105 group-hover:bg-bordeaux-700 transition-all duration-300">
+              <UtensilsCrossed className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
             <div>
-              <span className="font-serif font-semibold text-lg tracking-tight text-stone-100">
+              <span className="font-serif font-semibold text-sm sm:text-lg tracking-tight text-stone-100 group-hover:text-butter-300 transition-colors block sm:inline">
                 European Gastronomy
               </span>
-              <span className="hidden sm:inline-block text-[11px] font-sans text-stone-400 ml-2 tracking-widest uppercase">
+              <span className="hidden md:inline-block text-[11px] font-sans text-stone-400 ml-2 tracking-widest uppercase group-hover:text-stone-300 transition-colors">
                 Artisanal Hospitality Suite
               </span>
             </div>
-          </div>
+          </Link>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             {/* Multi-Currency Toggle */}
             <div className="flex items-center bg-espresso-900 rounded-xl p-0.5 border border-stone-200/10 text-xs font-mono">
               {(['EUR', 'GBP', 'CHF'] as const).map((curr) => (
                 <button
                   key={curr}
                   onClick={() => setCurrency(curr)}
-                  className={`px-2.5 py-1 rounded-lg transition-colors ${
+                  className={`px-2 sm:px-2.5 py-1 rounded-lg transition-colors ${
                     currency === curr ? 'bg-bordeaux-800 text-stone-100 font-bold' : 'text-stone-400 hover:text-stone-200'
                   }`}
                 >
@@ -71,7 +99,7 @@ export default function HomePage() {
 
             <button
               onClick={() => setIsReservationOpen(true)}
-              className="px-4 py-2 rounded-xl bg-bordeaux-800 text-stone-100 text-xs font-semibold hover:bg-bordeaux-700 transition-all shadow-xl border border-butter-300/20 active:scale-95"
+              className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-bordeaux-800 text-stone-100 text-xs font-semibold hover:bg-bordeaux-700 transition-all shadow-xl border border-butter-300/20 active:scale-95 shrink-0"
             >
               Book Table
             </button>
@@ -80,9 +108,9 @@ export default function HomePage() {
       </header>
 
       {/* Main Luxury Content */}
-      <main className="max-w-7xl mx-auto px-6 py-12 w-full space-y-20">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full space-y-16 sm:space-y-20">
         {/* Hero Section with Parallax Background & Editorial Typography */}
-        <section className="relative rounded-3xl overflow-hidden bistro-glass border border-stone-200/10 p-8 md:p-16 text-center max-w-5xl mx-auto shadow-2xl">
+        <section className="relative rounded-3xl overflow-hidden bistro-glass border border-stone-200/10 p-6 sm:p-12 md:p-16 text-center max-w-5xl mx-auto shadow-2xl">
           {/* Subtle Ambient Backlit Image */}
           <div
             className="absolute inset-0 bg-cover bg-center opacity-15 pointer-events-none"
@@ -97,23 +125,23 @@ export default function HomePage() {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="relative z-10 space-y-5"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-bordeaux-950/80 border border-butter-300/30 text-butter-300 text-xs uppercase tracking-widest font-semibold shadow-lg">
-              <Compass className="w-3.5 h-3.5" />
+            <div className="inline-flex max-w-full text-center flex-wrap items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-full bg-bordeaux-950/80 border border-butter-300/30 text-butter-300 text-[10px] sm:text-xs uppercase tracking-wider font-semibold shadow-lg">
+              <Compass className="w-3.5 h-3.5 shrink-0" />
               <span>European Client Acquisition • Web Demos Master Suite</span>
             </div>
 
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-stone-100 font-medium tracking-tight leading-[1.08] max-w-4xl mx-auto">
+            <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-stone-100 font-medium tracking-tight leading-[1.08] max-w-4xl mx-auto">
               Crafting Unforgettable Dining Journeys Across Europe
             </h1>
 
-            <p className="text-sm md:text-base text-stone-300 leading-relaxed font-sans font-light max-w-2xl mx-auto">
+            <p className="text-xs sm:text-sm md:text-base text-stone-300 leading-relaxed font-sans font-light max-w-2xl mx-auto">
               Two bespoke, handcrafted culinary web architectures engineered to convert discerning epicureans into lifelong guests. Featuring real-time SVG floorplan seat selection, European allergen matrix filtering, and sommelier vintage pairings.
             </p>
 
-            <div className="pt-4 flex flex-wrap items-center justify-center gap-4 text-xs">
+            <div className="pt-4 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs">
               <a
                 href="#demos"
-                className="px-6 py-3.5 rounded-2xl bg-bordeaux-800 text-stone-100 font-semibold hover:bg-bordeaux-700 transition-all shadow-xl flex items-center gap-2"
+                className="px-5 sm:px-6 py-3 sm:py-3.5 rounded-2xl bg-bordeaux-800 text-stone-100 font-semibold hover:bg-bordeaux-700 transition-all shadow-xl flex items-center gap-2"
               >
                 <span>View Live Hospitality Demos</span>
                 <ChevronRight className="w-4 h-4" />
@@ -121,7 +149,7 @@ export default function HomePage() {
 
               <button
                 onClick={() => setIsReservationOpen(true)}
-                className="px-6 py-3.5 rounded-2xl bg-espresso-900/90 text-stone-200 border border-stone-200/20 font-medium hover:text-white hover:bg-espresso-800 transition-all"
+                className="px-5 sm:px-6 py-3 sm:py-3.5 rounded-2xl bg-espresso-900/90 text-stone-200 border border-stone-200/20 font-medium hover:text-white hover:bg-espresso-800 transition-all"
               >
                 Test Live Reservation Drawer
               </button>
@@ -135,7 +163,7 @@ export default function HomePage() {
             <span className="text-[11px] font-bold uppercase tracking-widest text-butter-300">
               Interactive Flagship Demos
             </span>
-            <h2 className="font-serif text-3xl text-stone-100 font-medium">
+            <h2 className="font-serif text-2xl sm:text-3xl text-stone-100 font-medium">
               Explore Our Two Culinary Web Experiences
             </h2>
           </div>
@@ -266,7 +294,7 @@ export default function HomePage() {
         </section>
 
         {/* Flagship Feature 1: Live Interactive Floorplan & Seating Engine */}
-        <section className="space-y-6">
+        <section className="space-y-6 w-full max-w-full overflow-hidden">
           <FloorplanViewer
             selectedTableId={selectedTable?.id}
             onSelectTable={handleSelectTable}
@@ -274,23 +302,23 @@ export default function HomePage() {
         </section>
 
         {/* Flagship Feature 2: Smart Dietary & Allergen Matrix Filter */}
-        <section className="space-y-6">
+        <section className="space-y-6 w-full max-w-full overflow-hidden">
           <DietaryFilterBar
             activeFilters={activeDietaryFilters}
             onToggleFilter={handleToggleDietary}
             onClearFilters={() => setActiveDietaryFilters([])}
-            matchingCount={14}
+            matchingCount={dynamicMatchCount}
           />
         </section>
 
         {/* Interactive Wine Pairing Showcase Trigger */}
-        <section className="bistro-glass rounded-3xl p-8 md:p-12 border border-stone-200/10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden">
+        <section className="bistro-glass rounded-3xl p-6 sm:p-8 md:p-12 border border-stone-200/10 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 shadow-2xl relative overflow-hidden">
           <div className="space-y-3 max-w-xl">
             <div className="flex items-center gap-2 text-butter-300 text-xs font-bold uppercase tracking-widest">
               <Wine className="w-4 h-4 text-bordeaux-600" />
               <span>Flagship Interactive Feature</span>
             </div>
-            <h3 className="font-serif text-2xl md:text-3xl text-stone-100 font-medium">
+            <h3 className="font-serif text-xl sm:text-2xl md:text-3xl text-stone-100 font-medium">
               Sommelier Vintage Pairing & Sensory Radar
             </h3>
             <p className="text-xs md:text-sm text-stone-300 leading-relaxed font-sans">
@@ -298,7 +326,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="shrink-0">
+          <div className="shrink-0 w-full md:w-auto">
             <button
               onClick={() =>
                 handleOpenWinePairing('Pan-Seared Brittany Turbot Carpaccio', {
@@ -312,7 +340,7 @@ export default function HomePage() {
                   radar: { acidity: 4.8, tannins: 1.0, body: 3.8, oak: 3.2, intensity: 4.5 },
                 })
               }
-              className="px-8 py-4 rounded-2xl bg-bordeaux-800 text-stone-100 text-xs font-semibold hover:bg-bordeaux-700 transition-all shadow-xl flex items-center gap-2.5 active:scale-95"
+              className="w-full md:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-bordeaux-800 text-stone-100 text-xs font-semibold hover:bg-bordeaux-700 transition-all shadow-xl flex items-center justify-center gap-2.5 active:scale-95"
             >
               <Wine className="w-4 h-4 text-butter-300" />
               <span>Launch Interactive Sommelier Radar</span>
@@ -355,18 +383,30 @@ export default function HomePage() {
       </main>
 
       {/* European Compliance Footer */}
-      <footer className="border-t border-stone-200/10 bg-espresso-950/95 py-12 px-6 text-xs text-stone-400">
+      <footer className="border-t border-stone-200/10 bg-espresso-950/95 py-12 px-4 sm:px-6 text-xs text-stone-400 pb-24 sm:pb-16">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <p className="font-serif text-stone-200 text-sm font-medium">European Dining Web Acquisition Suite</p>
+          <Link href="/" aria-label="European Dining Web Acquisition Suite Home" className="group block">
+            <p className="font-serif text-stone-200 text-sm font-medium group-hover:text-butter-300 transition-colors">
+              European Dining Web Acquisition Suite
+            </p>
             <p className="text-[11px] text-stone-500 mt-0.5">Designed & Architected by Mitul Kabir Badhon</p>
-          </div>
+          </Link>
 
-          <div className="flex flex-wrap items-center gap-6 text-xs">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs">
             <Link href="/bistro" className="hover:text-stone-200 transition-colors">Bistro Demo</Link>
             <Link href="/pizzeria" className="hover:text-stone-200 transition-colors">Pizzeria Demo</Link>
             <Link href="/impressum" className="hover:text-stone-200 transition-colors">Impressum (Legal)</Link>
             <Link href="/privacy" className="hover:text-stone-200 transition-colors">GDPR Privacy Policy</Link>
+            <button
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.dispatchEvent(new CustomEvent('open-gdpr-banner'));
+                }
+              }}
+              className="text-stone-400 hover:text-butter-300 transition-colors underline underline-offset-4"
+            >
+              Cookie Settings
+            </button>
           </div>
         </div>
       </footer>
