@@ -1,0 +1,29 @@
+{
+  "name": "european-dining-web-demos-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "European Client Acquisition Web Demos — High-End European Bistro & Artisan Sourdough Pizzeria",
+  "author": "Mitul Kabir Badhon <mitulkabirbadhon7@gmail.com> (https://github.com/mitulkabirbadhon7)",
+  "workspaces": [
+    "shared",
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=shared && npm run build --workspace=backend && npm run build --workspace=frontend",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "test": "npm run test --workspace=backend"
+  },
+  "keywords": [
+    "european-gastronomy",
+    "fine-dining",
+    "nextjs",
+    "typescript",
+    "express",
+    "neon-postgres",
+    "zod",
+    "shadcn"
+  ],
+  "license": "MIT"
+}

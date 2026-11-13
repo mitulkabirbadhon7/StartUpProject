@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #1a130e;
+  --foreground: #f7f4ee;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom European Gastronomy Glassmorphism */
+.bistro-glass {
+  background: rgba(42, 30, 23, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(247, 244, 238, 0.12);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+.pizzeria-glass {
+  background: rgba(28, 26, 24, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(200, 109, 81, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+}
+
+/* Tactile Soft Neu-Depth Controls */
+.tactile-seat-button {
+  background: #231913;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6), -2px -2px 6px rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(247, 244, 238, 0.08);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tactile-seat-button:active,
+.tactile-seat-button[data-state="selected"] {
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.7), inset -2px -2px 5px rgba(255, 255, 255, 0.06);
+  border-color: #f3e5ab;
+}
+
+/* Elegant Minimal Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a130e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3d2d23;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5e1924;
+}
