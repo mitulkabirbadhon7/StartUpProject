@@ -58,7 +58,7 @@ export default function WinePairingDrawer({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-espresso-950/80 backdrop-blur-md animate-fadeIn">
-      <div className="relative w-full max-w-xl bistro-glass rounded-3xl border border-stone-200/20 shadow-2xl p-6 md:p-8 overflow-hidden">
+      <div className="relative w-full max-w-xl bistro-glass rounded-3xl border border-stone-200/20 shadow-2xl p-6 md:p-8 max-h-[92vh] overflow-y-auto">
         {/* Close Button */}
         <button
           onClick={onClose}

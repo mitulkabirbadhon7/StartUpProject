@@ -21,7 +21,7 @@ const BISTRO_COURSES = [
     desc: 'Thinly shaved wild turbot, pickled sea fennel, citrus gel, cold-pressed Dordogne olive oil, and fleur de sel crystals.',
     priceCents: 2600,
     tags: ['Gluten-Free', 'Dairy-Free', 'Halal'],
-    image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?q=80&w=800&auto=format&fit=crop',
     wine: {
       wineName: '2022 Domaine Leflaive Puligny-Montrachet',
       vintage: 2022,
@@ -41,7 +41,7 @@ const BISTRO_COURSES = [
     desc: 'Hand-rolled 30-egg yolk ribbons, 24-month cultured Normandy farm butter, and 8 grams shaved winter black tuber melanosporum.',
     priceCents: 3800,
     tags: ['Vegetarian', 'Signature', 'Halal'],
-    image: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281292?q=80&w=800&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1546549032-9571cd6b27df?q=80&w=800&auto=format&fit=crop',
     wine: {
       wineName: '2019 Vietti Barolo Castiglione',
       vintage: 2019,
