@@ -10,6 +10,9 @@ import WinePairingDrawer, { WinePairingData } from '@/components/sommelier/WineP
 import ReservationDrawer from '@/components/reservation/ReservationDrawer';
 import TastingCalculator from '@/components/calculator/TastingCalculator';
 import TiltCard from '@/components/ui/TiltCard';
+import BlurText from '@/components/ui/BlurText';
+import MagneticButton from '@/components/ui/MagneticButton';
+import SpotlightCard from '@/components/ui/SpotlightCard';
 import { useCurrency } from '@/context/CurrencyContext';
 import { formatCurrency } from '@/lib/utils';
 
@@ -193,9 +196,13 @@ export default function BistroPage() {
               <span>Michelin Guide Inspection • Autumn/Winter 2026/2027</span>
             </div>
 
-            <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl font-medium text-stone-100 tracking-tight leading-tight max-w-3xl mx-auto">
-              Terroir Authentique & Raffinement Alpine
-            </h2>
+            <div className="max-w-3xl mx-auto">
+              <BlurText
+                text="Terroir Authentique & Raffinement Alpine"
+                className="font-serif text-3xl md:text-5xl lg:text-6xl font-medium text-stone-100 tracking-tight leading-tight justify-center"
+                delay={60}
+              />
+            </div>
 
             <p className="text-xs md:text-sm text-stone-300 max-w-2xl mx-auto leading-relaxed font-sans font-light">
               From the wild Atlantic currents of Brittany to the ancient oak forests of Périgord, our culinary manifesto celebrates biodynamic French agriculture, heirloom produce, and timeless classical technique.

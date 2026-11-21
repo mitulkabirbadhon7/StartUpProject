@@ -9,6 +9,10 @@ import DietaryFilterBar from '@/components/menu/DietaryFilterBar';
 import WinePairingDrawer, { WinePairingData } from '@/components/sommelier/WinePairingDrawer';
 import ReservationDrawer from '@/components/reservation/ReservationDrawer';
 import TiltCard from '@/components/ui/TiltCard';
+import SpotlightCard from '@/components/ui/SpotlightCard';
+import BlurText from '@/components/ui/BlurText';
+import MagneticButton from '@/components/ui/MagneticButton';
+import AuroraBackground from '@/components/ui/AuroraBackground';
 import { useCurrency, Currency } from '@/context/CurrencyContext';
 
 const TOTAL_CATALOG_DISHES = [
@@ -109,52 +113,61 @@ export default function HomePage() {
 
       {/* Main Luxury Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full space-y-16 sm:space-y-20">
-        {/* Hero Section with Parallax Background & Editorial Typography */}
-        <section className="relative rounded-3xl overflow-hidden bistro-glass border border-stone-200/10 p-6 sm:p-12 md:p-16 text-center max-w-5xl mx-auto shadow-2xl">
-          {/* Subtle Ambient Backlit Image */}
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-15 pointer-events-none"
-            style={{
-              backgroundImage: "url('https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=1600&auto=format&fit=crop')",
-            }}
-          />
+        {/* Hero Section with Aurora Ambient Glow & React Bits BlurText Typography */}
+        <section className="relative rounded-3xl overflow-hidden border border-stone-200/10 shadow-2xl max-w-5xl mx-auto">
+          <AuroraBackground variant="bistro" className="p-6 sm:p-12 md:p-16 text-center">
+            {/* Subtle Ambient Backlit Image */}
+            <div
+              className="absolute inset-0 bg-cover bg-center opacity-15 pointer-events-none"
+              style={{
+                backgroundImage: "url('https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=1600&auto=format&fit=crop')",
+              }}
+            />
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10 space-y-5"
-          >
-            <div className="inline-flex max-w-full text-center flex-wrap items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-full bg-bordeaux-950/80 border border-butter-300/30 text-butter-300 text-[10px] sm:text-xs uppercase tracking-wider font-semibold shadow-lg">
-              <Compass className="w-3.5 h-3.5 shrink-0" />
-              <span>European Client Acquisition • Web Demos Master Suite</span>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="relative z-10 space-y-5"
+            >
+              <div className="inline-flex max-w-full text-center flex-wrap items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-full bg-bordeaux-950/80 border border-butter-300/30 text-butter-300 text-[10px] sm:text-xs uppercase tracking-wider font-semibold shadow-lg">
+                <Compass className="w-3.5 h-3.5 shrink-0" />
+                <span>European Client Acquisition • Web Demos Master Suite</span>
+              </div>
 
-            <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-stone-100 font-medium tracking-tight leading-[1.08] max-w-4xl mx-auto">
-              Crafting Unforgettable Dining Journeys Across Europe
-            </h1>
+              <div className="max-w-4xl mx-auto">
+                <BlurText
+                  text="Crafting Unforgettable Dining Journeys Across Europe"
+                  className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-stone-100 font-medium tracking-tight leading-[1.08] justify-center"
+                  delay={70}
+                />
+              </div>
 
-            <p className="text-xs sm:text-sm md:text-base text-stone-300 leading-relaxed font-sans font-light max-w-2xl mx-auto">
-              Two bespoke, handcrafted culinary web architectures engineered to convert discerning epicureans into lifelong guests. Featuring real-time SVG floorplan seat selection, European allergen matrix filtering, and sommelier vintage pairings.
-            </p>
+              <p className="text-xs sm:text-sm md:text-base text-stone-300 leading-relaxed font-sans font-light max-w-2xl mx-auto">
+                Two bespoke, handcrafted culinary web architectures engineered to convert discerning epicureans into lifelong guests. Featuring real-time SVG floorplan seat selection, European allergen matrix filtering, and sommelier vintage pairings.
+              </p>
 
-            <div className="pt-4 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs">
-              <a
-                href="#demos"
-                className="px-5 sm:px-6 py-3 sm:py-3.5 rounded-2xl bg-bordeaux-800 text-stone-100 font-semibold hover:bg-bordeaux-700 transition-all shadow-xl flex items-center gap-2"
-              >
-                <span>View Live Hospitality Demos</span>
-                <ChevronRight className="w-4 h-4" />
-              </a>
+              <div className="pt-4 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs">
+                <MagneticButton
+                  onClick={() => {
+                    const el = document.getElementById('demos');
+                    el?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="px-5 sm:px-6 py-3 sm:py-3.5 rounded-2xl bg-bordeaux-800 text-stone-100 font-semibold hover:bg-bordeaux-700 transition-all shadow-xl flex items-center gap-2"
+                >
+                  <span>View Live Hospitality Demos</span>
+                  <ChevronRight className="w-4 h-4" />
+                </MagneticButton>
 
-              <button
-                onClick={() => setIsReservationOpen(true)}
-                className="px-5 sm:px-6 py-3 sm:py-3.5 rounded-2xl bg-espresso-900/90 text-stone-200 border border-stone-200/20 font-medium hover:text-white hover:bg-espresso-800 transition-all"
-              >
-                Test Live Reservation Drawer
-              </button>
-            </div>
-          </motion.div>
+                <MagneticButton
+                  onClick={() => setIsReservationOpen(true)}
+                  className="px-5 sm:px-6 py-3 sm:py-3.5 rounded-2xl bg-espresso-900/90 text-stone-200 border border-stone-200/20 font-medium hover:text-white hover:bg-espresso-800 transition-all shadow-lg"
+                >
+                  Test Live Reservation Drawer
+                </MagneticButton>
+              </div>
+            </motion.div>
+          </AuroraBackground>
         </section>
 
         {/* Dual Flagship Demo Cards with Rich Photography & 3D Tilt Physics */}

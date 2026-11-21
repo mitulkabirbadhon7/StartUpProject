@@ -7,6 +7,7 @@ import { ArrowLeft, Flame, Clock, Sparkles, MapPin, Wine, Check, Wheat, Star, Ch
 import ReservationDrawer from '@/components/reservation/ReservationDrawer';
 import FermentationVisualizer from '@/components/pizzeria/FermentationVisualizer';
 import TiltCard from '@/components/ui/TiltCard';
+import BlurText from '@/components/ui/BlurText';
 import { useCurrency } from '@/context/CurrencyContext';
 import { formatCurrency } from '@/lib/utils';
 
@@ -157,9 +158,13 @@ export default function PizzeriaPage() {
               <span>450°C Birchwood Hearth • Stefano Ferrara Forno</span>
             </div>
 
-            <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl font-medium text-stone-100 tracking-tight leading-tight max-w-3xl mx-auto">
-              48 Ore di Fermentazione Naturale
-            </h2>
+            <div className="max-w-3xl mx-auto">
+              <BlurText
+                text="48 Ore di Fermentazione Naturale"
+                className="font-serif text-3xl md:text-5xl lg:text-6xl font-medium text-stone-100 tracking-tight leading-tight justify-center"
+                delay={60}
+              />
+            </div>
 
             <p className="text-xs md:text-sm text-stone-300 max-w-2xl mx-auto leading-relaxed font-sans font-light">
               Every pizza begins with our hundred-year-old sourdough starter, organic stone-milled Campania grains, and 85% hydration dough proofed for 48 hours to ensure airy digestibility and unmistakable leopard-blistered crust.
